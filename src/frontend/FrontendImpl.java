@@ -1,7 +1,6 @@
 package frontend;
 
 import accountService.AccountServiceImpl;
-import accountService.MessageGetUserId;
 import base.Address;
 import base.Frontend;
 import base.MessageSystem;

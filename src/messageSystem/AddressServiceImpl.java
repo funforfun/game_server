@@ -1,5 +1,9 @@
-package base;
+package messageSystem;
 
+
+import base.Abonent;
+import base.Address;
+import base.AddressService;
 
 import java.util.HashMap;
 import java.util.Map;

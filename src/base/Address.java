@@ -13,4 +13,8 @@ public class Address {
     public int hashCode() {
         return abonentId;
     }
+
+    public int getAbonentId() {
+        return abonentId;
+    }
 }

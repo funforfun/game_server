@@ -1,4 +1,4 @@
-package messageSystem;
+package base;
 
 import base.Abonent;
 import base.Address;
@@ -20,5 +20,5 @@ public abstract class Message {
         return to;
     }
 
-    public abstract void exec(Abonent abonent) throws RuntimeException;
+    public abstract void exec(Abonent abonent);
 }

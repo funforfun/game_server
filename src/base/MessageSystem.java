@@ -1,7 +1,5 @@
 package base;
 
-import messageSystem.Message;
-
 public interface MessageSystem {
     void addService(Abonent abonent);
 

@@ -1,9 +1,9 @@
-package accountService;
+package messageSystem;
 
 import base.Abonent;
 import base.AccountService;
 import base.Address;
-import messageSystem.Message;
+import base.Message;
 
 public abstract class MessageToAccountService extends Message {
 
@@ -12,7 +12,7 @@ public abstract class MessageToAccountService extends Message {
     }
 
     @Override
-    public void exec(Abonent abonent) throws RuntimeException {
+    public void exec(Abonent abonent) {
         if (abonent instanceof AccountService) {
             exec((AccountService) abonent);
         } else {

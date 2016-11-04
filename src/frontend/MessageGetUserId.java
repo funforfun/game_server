@@ -1,8 +1,9 @@
-package accountService;
+package frontend;
 
 import base.AccountService;
 import base.Address;
 import frontend.MessageUpdateUserId;
+import messageSystem.MessageToAccountService;
 
 public class MessageGetUserId extends MessageToAccountService {
     private String name;

@@ -3,7 +3,7 @@ package gameMechanics;
 import base.Abonent;
 import base.Address;
 import base.GameMechanics;
-import messageSystem.Message;
+import base.Message;
 
 public abstract class MessageToGameMechanics extends Message {
     public MessageToGameMechanics(Address from, Address to) {

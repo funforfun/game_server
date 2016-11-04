@@ -2,6 +2,7 @@ package frontend;
 
 import base.Address;
 import base.Frontend;
+import messageSystem.MessageToFrontend;
 
 public class MessageUpdateUserId extends MessageToFrontend {
     private String name;
@@ -14,6 +15,7 @@ public class MessageUpdateUserId extends MessageToFrontend {
     }
 
     public void exec(Frontend frontend) {
+        System.out.print("Address of Frontend: " + frontend.getAddress().getAbonentId() + '\n');
         frontend.setId(name, id);
     }
 }
