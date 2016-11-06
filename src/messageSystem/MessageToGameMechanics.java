@@ -1,4 +1,4 @@
-package gameMechanics;
+package messageSystem;
 
 import base.Abonent;
 import base.Address;

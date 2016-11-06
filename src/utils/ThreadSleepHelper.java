@@ -2,6 +2,7 @@ package utils;
 
 public class ThreadSleepHelper {
     private static int DEFAULT_SLEEP_TIME = 5000;
+    public static int SHORT_SLEEP_TIME = 5000;
 
     public static void sleep() {
         try {
