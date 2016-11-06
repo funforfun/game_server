@@ -4,6 +4,10 @@ import accountService.AccountServiceImpl;
 import base.Address;
 import base.Frontend;
 import base.MessageSystem;
+import gameMechanics.GameMechanicsImpl;
+import gameMechanics.GameSession;
+import gameMechanics.MsgAddWaitingPlayer;
+import gameMechanics.MsgStartGameSession;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import utils.ThreadSleepHelper;
@@ -12,7 +16,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
@@ -27,6 +33,10 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
     private Address address;
     private Map<String, Integer> nameToId = new HashMap<String, Integer>();
     private Map<Integer, UserSession> sessionIdToSession = new HashMap<Integer, UserSession>();
+    private Map<UserSession, GameSession> userSessionToGameSessions = new HashMap<UserSession, GameSession>();
+    private List<GameSession> waitingGameSessions = new ArrayList<GameSession>();
+    private List<GameSession> runningGameSessions = new ArrayList<GameSession>();
+    private List<GameSession> finishedGameSessions = new ArrayList<GameSession>();
 
 
     public FrontendImpl(MessageSystem messageSystem) {
@@ -95,11 +105,59 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
             Address addressAccountService = messageSystem.getAddressService().getAddress(AccountServiceImpl.class);
             messageSystem.sendMessage(new MessageGetUserId(getAddress(), addressAccountService, userSession.getName()));
         }
+
+        // TODO: не страртовать игровую механику, пока не было авторизации
+        if (userSessionToGameSessions.containsKey(userSession)) {
+            GameSession gameSession = userSessionToGameSessions.get(userSession);
+            if (runningGameSessions.contains(gameSession)) {
+                System.out.println("Игровая сессия уже идет!");
+                return;
+            }
+        }
+
+        // todo: game mechanic
+        Address gameMechanics = messageSystem.getAddressService().getAddress(GameMechanicsImpl.class);
+        if (waitingGameSessions.isEmpty()) {
+            System.out.println("Создание игровой сессии игроком: " + userSession.getSessionId());
+            messageSystem.sendMessage(new MsgAddWaitingPlayer(getAddress(), gameMechanics, userSession));
+        } else {
+            System.out.println("Есть ожидающие игроки!");
+            if (!userSessionToGameSessions.containsKey(userSession)) {
+                System.out.println("Подключение к игровой сессии игрока: " + userSession.getSessionId());
+                GameSession gameSession = waitingGameSessions.get(0);
+                userSessionToGameSessions.put(userSession, gameSession);
+                messageSystem.sendMessage(new MsgStartGameSession(getAddress(), gameMechanics, gameSession));
+            } else {
+                System.out.println("Игрок " + userSession.getSessionId() + " уже ожидает другого игрока!");
+            }
+        }
+
     }
 
     public void setId(String name, Integer id) {
         nameToId.put(name, id);
     }
+
+    public void addWaitingGameSession(GameSession gameSession) {
+        System.out.println("addWaitingGameSession");
+        waitingGameSessions.add(gameSession);
+        userSessionToGameSessions.put(gameSession.getFirstPlayer(), gameSession);
+    }
+
+    @Override
+    public void addRunningGameSessions(GameSession gameSession) {
+        System.out.println("addRunningGameSessions");
+        runningGameSessions.add(gameSession);
+        waitingGameSessions.remove(gameSession);
+    }
+
+    @Override
+    public void addFinishedGameSession(GameSession gameSession) {
+        System.out.println("addFinishedGameSession");
+        finishedGameSessions.add(gameSession);
+        runningGameSessions.remove(gameSession);
+    }
+
 
     private UserSession getUserSession(int session_id, String name) {
         if (sessionIdToSession.containsKey(session_id)) {

@@ -2,25 +2,22 @@ package gameMechanics;
 
 import base.Address;
 import base.GameMechanics;
+import frontend.MessageGameStarted;
+import frontend.MessageUpdateUserId;
 import frontend.UserSession;
 import messageSystem.MessageToGameMechanics;
 
 public class MsgStartGameSession extends MessageToGameMechanics {
-    private UserSession user1;
-    private UserSession user2;
+    private GameSession gameSession;
 
-    public MsgStartGameSession(Address from, Address to, UserSession user1, UserSession user2) {
+    public MsgStartGameSession(Address from, Address to, GameSession gameSession) {
         super(from, to);
-        this.user1 = user1;
-        this.user2 = user2;
+        this.gameSession = gameSession;
     }
 
     public void exec(GameMechanics gameMechanics) {
-        // TODO все данные о партии игроков (их id, карта, положение фигур)
-        GameSession gameSession = new GameSession();
-        gameSession.addPlayer(user1);
-        gameSession.addPlayer(user2);
-
+        gameSession.start();
+        gameMechanics.getMessageSystem().sendMessage(new MessageGameStarted(getTo(), getFrom(), gameSession));
 
         // TODO: сообщение на фронтенд: gameStarted!
 
