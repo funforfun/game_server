@@ -28,4 +28,8 @@ public class GameMechanicsImpl implements GameMechanics, Runnable {
             ThreadSleepHelper.sleep(10);
         }
     }
+
+    public MessageSystem getMessageSystem() {
+        return messageSystem;
+    }
 }

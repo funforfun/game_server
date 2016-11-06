@@ -9,7 +9,6 @@ public abstract class MessageToAccountService extends Message {
 
     public MessageToAccountService(Address from, Address to) {
         super(from, to);
-        System.out.println(this.getClass().toString() + ": MessageToAccountService");
     }
 
     @Override

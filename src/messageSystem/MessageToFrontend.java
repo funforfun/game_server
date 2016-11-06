@@ -9,7 +9,6 @@ public abstract class MessageToFrontend extends Message {
 
     public MessageToFrontend(Address from, Address to) {
         super(from, to);
-        System.out.println(this.getClass().toString() + ": MessageToFrontend");
     }
 
     public void exec(Abonent abonent) {

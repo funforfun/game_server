@@ -14,7 +14,6 @@ public class AccountServiceImpl implements AccountService, Runnable {
     private Map<String, Integer> fakeAccounter = new HashMap<String, Integer>();
 
     public AccountServiceImpl(MessageSystem messageSystem) {
-        System.out.println(this.getClass().toString() + ": AccountServiceImpl");
         this.messageSystem = messageSystem;
         this.address = new Address();
         messageSystem.addService(this);
@@ -32,19 +31,16 @@ public class AccountServiceImpl implements AccountService, Runnable {
     }
 
     public Integer getUserId(String name) {
-        System.out.println(this.getClass().toString() + ": getUserId");
         ThreadSleepHelper.sleep(5000);
         Integer user_id = fakeAccounter.get(name);
         return (user_id == null) ? -1 : user_id;
     }
 
     public MessageSystem getMessageSystem() {
-        System.out.println(this.getClass().toString() + ": getMessageSystem");
         return messageSystem;
     }
 
     public Address getAddress() {
-        System.out.println(this.getClass().toString() + ": getMessageSystem");
         return address;
     }
 }
