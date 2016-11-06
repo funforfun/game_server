@@ -13,16 +13,19 @@ public class MessageSystemImpl implements MessageSystem {
     private AddressServiceImpl addressService = new AddressServiceImpl();
 
     public void addService(Abonent abonent) {
+        System.out.println(this.getClass().toString() + ": addService");
         addressService.setAddress(abonent);
         messages.put(abonent.getAddress(), new ConcurrentLinkedQueue<Message>());
     }
 
     public void sendMessage(Message message) {
+        System.out.println(this.getClass().toString() + ": sendMessage");
         Queue<Message> messageQueue = messages.get(message.getTo());
         messageQueue.add(message);
     }
 
     public void execForAbonent(Abonent abonent) {
+        System.out.println(this.getClass().toString() + ": execForAbonent");
         Queue<Message> messageQueue = messages.get(abonent.getAddress());
 
         if (messageQueue == null) {
@@ -40,6 +43,7 @@ public class MessageSystemImpl implements MessageSystem {
     }
 
     public AddressService getAddressService(){
+        System.out.println(this.getClass().toString() + ": getAddressService");
         return addressService;
     }
 }

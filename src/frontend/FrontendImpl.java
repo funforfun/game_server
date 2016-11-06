@@ -30,6 +30,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
 
 
     public FrontendImpl(MessageSystem messageSystem) {
+        System.out.println(this.getClass().toString() + ": FrontendImpl");
         this.messageSystem = messageSystem;
         this.address = new Address();
         messageSystem.addService(this);
@@ -41,8 +42,6 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
         while (true) {
             messageSystem.execForAbonent(this);
             ThreadSleepHelper.sleep(10);
-//            ThreadSleepHelper.sleep(7000);
-//            log.info("count requests: " + handleCount);
         }
     }
 
@@ -53,6 +52,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException, ServletException {
+        System.out.println(this.getClass().toString() + ": handle");
 
         handleCount.incrementAndGet();
         httpServletResponse.setContentType("text/html;charset=utf-8");
@@ -96,10 +96,12 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
     }
 
     public void setId(String name, Integer id) {
+        System.out.println(this.getClass().toString() + ": setId");
         nameToId.put(name, id);
     }
 
     private UserSession getUserSession(int session_id, String name) {
+        System.out.println(this.getClass().toString() + ": getUserSession");
         if (sessionIdToSession.containsKey(session_id)) {
             return sessionIdToSession.get(session_id);
         }
@@ -111,6 +113,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
     }
 
     public Address getAddress() {
+        System.out.println(this.getClass().toString() + ": getAddress");
         return address;
     }
 }
