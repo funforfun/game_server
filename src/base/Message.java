@@ -1,8 +1,5 @@
 package base;
 
-import base.Abonent;
-import base.Address;
-
 public abstract class Message {
     private Address from;
     private Address to;
