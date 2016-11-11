@@ -3,12 +3,13 @@ package utils;
 import java.lang.reflect.Field;
 
 public class ReflectionHelper {
-    public static Object createInstance(String className) {
+    public static Object createInstance(String className)  {
         try {
             return Class.forName(className).newInstance();
         } catch (Exception ignored) {
-
+            ignored.printStackTrace();
         }
+        return null;
     }
 
     public static void setFieldValue(Object object, String fieldName, String value) {
@@ -20,9 +21,8 @@ public class ReflectionHelper {
             } else if (field.getType().equals(int.class)) {
                 field.set(object, Integer.decode(value));
             }
-            // TODO: и другие типы...
+            // TODO: else if другие типы...
             field.setAccessible(false);
-
         } catch (Exception ignored) {
 
         }
