@@ -3,7 +3,7 @@ package utils;
 import java.lang.reflect.Field;
 
 public class ReflectionHelper {
-    public static Object createInstance(String className)  {
+    public static Object createInstance(String className) {
         try {
             return Class.forName(className).newInstance();
         } catch (Exception ignored) {
@@ -20,8 +20,12 @@ public class ReflectionHelper {
                 field.set(object, value);
             } else if (field.getType().equals(int.class)) {
                 field.set(object, Integer.decode(value));
+            } else if (field.getType().equals(boolean.class)) {
+                field.set(object, Boolean.parseBoolean(value));
+            } else if (field.getType() instanceof Object) {
+                // TODO: если объект, то надо десериализовать
+                throw new RuntimeException("Unknown field! " + field.getType());
             }
-            // TODO: else if другие типы...
             field.setAccessible(false);
         } catch (Exception ignored) {
 

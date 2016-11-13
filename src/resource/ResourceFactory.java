@@ -16,6 +16,8 @@ public class ResourceFactory {
 
     public Resource getResource(String path) {
 
+        // TODO: включить сюда VFS для проверки наличия файла и возможности его чтения
+
         return null;
     }
 }

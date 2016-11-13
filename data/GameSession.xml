@@ -1,0 +1,4 @@
+<class type="resource.GameSessionResource">
+    <numberOfPlayers>2</numberOfPlayers>
+    <timeLimit>5</timeLimit>
+</class>
