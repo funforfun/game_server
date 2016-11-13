@@ -5,7 +5,9 @@ import resource.ResourceFactory;
 import utils.TimeService;
 import vfs.VFSImpl;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TimerTask;
 
 public class Main {
@@ -32,6 +34,8 @@ public class Main {
     }
 
     private static void initResources() {
+        // карта ресурсов
+        Map<String, Resource> resourceMap = new HashMap<String, Resource>();
         VFSImpl vfs = new VFSImpl("");
         System.out.println("Absolute path to here: " + vfs.getAbsolutePath(""));
         Iterator<String> iterator = vfs.getIterator("./data");
@@ -40,8 +44,8 @@ public class Main {
             path = iterator.next();
             if (!vfs.isDirectory(path)) {
                 System.out.println(path);
-                ResourceFactory resourceFactory = ResourceFactory.getInstance();
-                Resource resource = resourceFactory.getResource(path);
+                Resource resource = ResourceFactory.getInstance().getResource(path);
+                resourceMap.put(path, resource);
                 int x = 1;
 
 //                // вариант 2, через DOM:
