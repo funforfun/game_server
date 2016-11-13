@@ -2,6 +2,7 @@ package main;
 
 import resource.Resource;
 import resource.ResourceFactory;
+import resource.ResourcesMap;
 import utils.TimeService;
 import vfs.VFSImpl;
 
@@ -34,8 +35,6 @@ public class Main {
     }
 
     private static void initResources() {
-        // карта ресурсов
-        Map<String, Resource> resourceMap = new HashMap<String, Resource>();
         VFSImpl vfs = new VFSImpl("");
         System.out.println("Absolute path to here: " + vfs.getAbsolutePath(""));
         Iterator<String> iterator = vfs.getIterator("./data");
@@ -45,28 +44,11 @@ public class Main {
             if (!vfs.isDirectory(path)) {
                 System.out.println(path);
                 Resource resource = ResourceFactory.getInstance().getResource(path);
-                resourceMap.put(path, resource);
-                int x = 1;
-
-//                // вариант 2, через DOM:
-//                File xmlFileDom = new File(path);
-//                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-//                DocumentBuilder documentBuilder = null;
-//                try {
-//                    documentBuilder = documentBuilderFactory.newDocumentBuilder();
-//                    org.w3c.dom.Document doc = documentBuilder.parse(xmlFileDom);
-//                    NodeList nodes = doc.getElementsByTagName("class");
-//                    int x2 = 1;
-//                } catch (ParserConfigurationException e) {
-//                    e.printStackTrace();
-//                } catch (SAXException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-
+                ResourcesMap.put(resource);
             }
         }
+        Map map = ResourcesMap.getResourcesMap();
+        int x = 1;
     }
 
     private static void timerTest() {
