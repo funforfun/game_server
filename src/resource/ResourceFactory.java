@@ -1,5 +1,7 @@
 package resource;
 
+import sax.ReaderXMLFile;
+
 public class ResourceFactory {
     private static ResourceFactory instance;
 
@@ -15,9 +17,6 @@ public class ResourceFactory {
     }
 
     public Resource getResource(String path) {
-
-        // TODO: включить сюда VFS для проверки наличия файла и возможности его чтения
-
-        return null;
+        return (Resource) ReaderXMLFile.readXML(path);
     }
 }

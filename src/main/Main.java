@@ -1,28 +1,10 @@
 package main;
 
-import accountService.AccountServiceImpl;
-import frontend.FrontendImpl;
-import gameMechanics.GameMechanicsImpl;
-import messageSystem.MessageSystemImpl;
-import org.eclipse.jetty.server.Server;
-import org.maltparser.concurrent.ConcurrentMaltParserModel;
-import org.maltparser.concurrent.ConcurrentMaltParserService;
-import org.maltparser.core.exception.MaltChainedException;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import sax.ReaderXMLFile;
+import resource.Resource;
+import resource.ResourceFactory;
 import utils.TimeService;
 import vfs.VFSImpl;
 
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.TimerTask;
 
@@ -30,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         timerTest();
-//        vfsTest();
+//        initResources();
 
 
 //        MessageSystemImpl messageSystem = new MessageSystemImpl();
@@ -49,7 +31,7 @@ public class Main {
 //        server.join();
     }
 
-    private static void vfsTest() {
+    private static void initResources() {
         VFSImpl vfs = new VFSImpl("");
         System.out.println("Absolute path to here: " + vfs.getAbsolutePath(""));
         Iterator<String> iterator = vfs.getIterator("./data");
@@ -58,7 +40,8 @@ public class Main {
             path = iterator.next();
             if (!vfs.isDirectory(path)) {
                 System.out.println(path);
-                Object object = ReaderXMLFile.readXML(path);
+                ResourceFactory resourceFactory = ResourceFactory.getInstance();
+                Resource resource = resourceFactory.getResource(path);
                 int x = 1;
 
 //                // вариант 2, через DOM:
@@ -89,7 +72,7 @@ public class Main {
             public void run() {
                 System.out.println("Hello from timer!");
                 TimeService.getInstance().stop();
-                Main.vfsTest();
+                Main.initResources();
             }
         }, 2000);
     }
