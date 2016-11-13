@@ -19,7 +19,6 @@ public class TimeHelper {
     }
 
     public static String getUserDateFull(Locale locale) {
-//        Locale locale1 = new Locale("ru");
         Date date = new Date();
         DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.FULL, locale);
         return dateFormatter.format(date);
