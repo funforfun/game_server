@@ -1,6 +1,6 @@
 package accountService;
 
-import base.AccountService;
+import base.DatabaseService;
 import base.Address;
 import base.MessageSystem;
 import utils.ThreadSleepHelper;
@@ -8,12 +8,12 @@ import utils.ThreadSleepHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AccountServiceImpl implements AccountService, Runnable {
+public class DatabaseServiceImpl implements DatabaseService, Runnable {
     private Address address;
     private final MessageSystem messageSystem;
     private Map<String, Integer> fakeAccounter = new HashMap<String, Integer>();
 
-    public AccountServiceImpl(MessageSystem messageSystem) {
+    public DatabaseServiceImpl(MessageSystem messageSystem) {
         this.messageSystem = messageSystem;
         this.address = new Address();
         messageSystem.addService(this);

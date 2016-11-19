@@ -1,6 +1,6 @@
 package frontend;
 
-import accountService.AccountServiceImpl;
+import accountService.DatabaseServiceImpl;
 import base.Address;
 import base.Frontend;
 import base.MessageSystem;
@@ -101,8 +101,8 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
             }
         } else {
             httpServletResponse.getWriter().println(AuthenticationPageGenerator.getPageWaitAuthorization(userSession.getName(), session_id));
-            // TODO: AccountServiceImpl -> AccountService
-            Address addressAccountService = messageSystem.getAddressService().getAddress(AccountServiceImpl.class);
+            // TODO: DatabaseServiceImpl -> DatabaseService
+            Address addressAccountService = messageSystem.getAddressService().getAddress(DatabaseServiceImpl.class);
             messageSystem.sendMessage(new MessageGetUserId(getAddress(), addressAccountService, userSession.getName()));
         }
 

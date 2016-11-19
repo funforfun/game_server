@@ -1,8 +1,7 @@
 package frontend;
 
-import base.AccountService;
+import base.DatabaseService;
 import base.Address;
-import frontend.MessageUpdateUserId;
 import messageSystem.MessageToAccountService;
 
 public class MessageGetUserId extends MessageToAccountService {
@@ -14,8 +13,8 @@ public class MessageGetUserId extends MessageToAccountService {
         this.name = name;
     }
 
-    public void exec(AccountService accountService) {
-        Integer id = accountService.getUserId(name);
-        accountService.getMessageSystem().sendMessage(new MessageUpdateUserId(getTo(),getFrom(), name, id));
+    public void exec(DatabaseService databaseService) {
+        Integer id = databaseService.getUserId(name);
+        databaseService.getMessageSystem().sendMessage(new MessageUpdateUserId(getTo(),getFrom(), name, id));
     }
 }
