@@ -66,7 +66,8 @@ public class DatabaseServiceImpl implements DatabaseService, Runnable {
             UsersDataSet usersDataSet = usersDAO.get(name);
             user_id = usersDataSet.getId();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("Unknown player! " + name);
         }
 //        Integer user_id = fakeAccounter.get(name);
 //        return (user_id == -1) ? -1 : user_id;
