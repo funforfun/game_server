@@ -6,7 +6,7 @@ public class UserSession {
     private static AtomicInteger currentSessionId = new AtomicInteger(1);
     private int sessionId;
     private String name;
-    private int userId;
+    private long userId;
 
     UserSession() {
         sessionId = currentSessionId.getAndIncrement();
@@ -24,11 +24,11 @@ public class UserSession {
         return name;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 }

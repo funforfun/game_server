@@ -1,6 +1,6 @@
 package base;
 
 public interface DatabaseService extends Abonent {
-    Integer getUserId(String name);
+    long getUserId(String name);
     MessageSystem getMessageSystem();
 }

@@ -31,7 +31,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
     private final MessageSystem messageSystem;
 
     private Address address;
-    private Map<String, Integer> nameToId = new HashMap<String, Integer>();
+    private Map<String, Long> nameToId = new HashMap<String, Long>();
     private Map<Integer, UserSession> sessionIdToSession = new HashMap<Integer, UserSession>();
     private Map<UserSession, GameSession> userSessionToGameSessions = new HashMap<UserSession, GameSession>();
     private List<GameSession> waitingGameSessions = new ArrayList<GameSession>();
@@ -89,11 +89,11 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
         log.info("Session Id from form: " + session_id);
         log.info("Name from UserSession: " + userSession.getName());
         log.info("Session Id from UserSession: " + userSession.getSessionId());
-        Integer id = nameToId.get(userSession.getName());
-        log.info("ID: " + id);
 
-        if (id != null) {
+        if (nameToId.containsKey(userSession.getName())) {
+            long id = nameToId.get(userSession.getName());
             userSession.setUserId(id);
+            log.info("ID: " + id);
             if (id == -1) {
                 httpServletResponse.getWriter().println("<h1>User " + userSession.getName() + " is unknown!</h1>");
             } else {
@@ -115,7 +115,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
             }
         }
 
-        // todo: game mechanic
+        // todo: game mechanic (привести в нормальный вид)
         Address gameMechanics = messageSystem.getAddressService().getAddress(GameMechanicsImpl.class);
         if (waitingGameSessions.isEmpty()) {
             System.out.println("Создание игровой сессии игроком: " + userSession.getSessionId());
@@ -134,7 +134,7 @@ public class FrontendImpl extends AbstractHandler implements Frontend, Runnable 
 
     }
 
-    public void setId(String name, Integer id) {
+    public void setId(String name, long id) {
         nameToId.put(name, id);
     }
 

@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class GameMechanicsImpl implements GameMechanics, Runnable {
 
-    private final Map<Integer, GameSession> userToGameSession = new HashMap<Integer, GameSession>();
+    private final Map<Long, GameSession> userToGameSession = new HashMap<Long, GameSession>();
     private List<GameSession> gameSessions = new ArrayList<GameSession>();
     private final MessageSystem messageSystem;
     private final Address address;

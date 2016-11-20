@@ -1,0 +1,8 @@
+<class type="resource.Connection">
+    <dbType>jdbc:mysql://</dbType>
+    <host>localhost:</host>
+    <port>3306/</port>
+    <dbName>test_db?</dbName>
+    <login>user=test_user&</login>
+    <password>password=1234</password>
+</class>

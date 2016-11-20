@@ -14,7 +14,7 @@ public class MessageGetUserId extends MessageToAccountService {
     }
 
     public void exec(DatabaseService databaseService) {
-        Integer id = databaseService.getUserId(name);
+        long id = databaseService.getUserId(name);
         databaseService.getMessageSystem().sendMessage(new MessageUpdateUserId(getTo(),getFrom(), name, id));
     }
 }

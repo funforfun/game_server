@@ -6,9 +6,9 @@ import messageSystem.MessageToFrontend;
 
 public class MessageUpdateUserId extends MessageToFrontend {
     private String name;
-    private Integer id;
+    private long id;
 
-    public MessageUpdateUserId(Address from, Address to, String name, Integer id) {
+    public MessageUpdateUserId(Address from, Address to, String name, long id) {
         super(from, to);
         this.name = name;
         this.id = id;

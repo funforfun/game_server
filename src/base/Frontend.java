@@ -4,7 +4,7 @@ import gameMechanics.GameSession;
 
 public interface Frontend extends Abonent {
 
-    void setId(String name, Integer id);
+    void setId(String name, long id);
 
     void addWaitingGameSession(GameSession gameSession);
 
