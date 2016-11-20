@@ -4,50 +4,73 @@ import base.DatabaseService;
 import base.Address;
 import base.MessageSystem;
 import dao.UsersDAO;
-import dataSets.UsersDataSet;
+import dataSets.UserDataSet;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import utils.ThreadSleepHelper;
 
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DatabaseServiceImpl implements DatabaseService, Runnable {
     private Address address;
     private final MessageSystem messageSystem;
-    private Map<String, Integer> fakeAccounter = new HashMap<String, Integer>();
     private UsersDAO usersDAO;
+
+//    public DatabaseServiceImpl(MessageSystem messageSystem) {
+//        this.messageSystem = messageSystem;
+//        this.address = new Address();
+//        messageSystem.addService(this);
+//
+//        try {
+//            Driver driver = new com.mysql.jdbc.Driver();
+//            System.out.println(driver.getMajorVersion() + "." + driver.getMinorVersion());
+//            DriverManager.registerDriver(driver);
+//            StringBuilder url = new StringBuilder();
+//            url.
+//                    append("jdbc:mysql://"). // db type
+//                    append("localhost:"). // host name
+//                    append("3306/"). // port
+//                    append("test_db?"). // db name
+//                    append("user=test_user&"). // login
+//                    append("password=1234"); // password
+//
+//            System.out.println(url.toString());
+//
+//            Connection connection = DriverManager.getConnection(url.toString());
+//            usersDAO = new UsersDAO(connection);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public DatabaseServiceImpl(MessageSystem messageSystem) {
         this.messageSystem = messageSystem;
         this.address = new Address();
         messageSystem.addService(this);
-        this.fakeAccounter.put("Tully", 1);
-        this.fakeAccounter.put("Sully", 2);
 
-        try {
-            Driver driver = new com.mysql.jdbc.Driver();
-            System.out.println(driver.getMajorVersion() + "." + driver.getMinorVersion());
-            DriverManager.registerDriver(driver);
-            StringBuilder url = new StringBuilder();
-            url.
-                    append("jdbc:mysql://"). // db type
-                    append("localhost:"). // host name
-                    append("3306/"). // port
-                    append("test_db?"). // db name
-                    append("user=test_user&"). // login
-                    append("password=1234"); // password
+        Configuration configuration = new Configuration();
+        // Добавляем сохраняемый объект в конфиг
+        configuration.addAnnotatedClass(UserDataSet.class);
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/test_db");
+        configuration.setProperty("hibernate.connection.username", "test_user");
+        configuration.setProperty("hibernate.connection.password", "1234");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
-            System.out.println(url.toString());
 
-            Connection connection = DriverManager.getConnection(url.toString());
-            usersDAO = new UsersDAO(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
+        StandardServiceRegistry serviceRegistry = builder.build();
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
 
+        usersDAO = new UsersDAO(sessionFactory);
     }
 
     @Override
@@ -63,8 +86,8 @@ public class DatabaseServiceImpl implements DatabaseService, Runnable {
         ThreadSleepHelper.sleep(5000);
         long user_id = -1;
         try {
-            UsersDataSet usersDataSet = usersDAO.get(name);
-            user_id = usersDataSet.getId();
+            UserDataSet userDataSet = usersDAO.get(name);
+            user_id = userDataSet.getId();
         } catch (SQLException e) {
 //            e.printStackTrace();
             System.out.println("Unknown player! " + name);

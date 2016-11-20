@@ -1,11 +1,14 @@
 package main;
 
-import accountService.DatabaseServiceImpl;
+import dao.UsersDAO;
+import dataSets.UserDataSet;
 import dbexecutor.TResultHandler;
-import frontend.FrontendImpl;
-import gameMechanics.GameMechanicsImpl;
-import messageSystem.MessageSystemImpl;
-import org.eclipse.jetty.server.Server;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import resource.Resource;
 import resource.ResourceFactory;
 import resource.ResourcesMap;
@@ -19,25 +22,63 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        hibernateTest();
 //        jdbcTest();
         // timer + resources + vfs
 //        timerTest();
 
 
-        MessageSystemImpl messageSystem = new MessageSystemImpl();
+//        MessageSystemImpl messageSystem = new MessageSystemImpl();
+//
+//        FrontendImpl frontend = new FrontendImpl(messageSystem);
+//        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
+//        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
+//
+//        (new Thread(frontend)).start();
+//        (new Thread(accountService)).start();
+//        (new Thread(gameMechanics)).start();
+//
+//        Server server = new Server(8080);
+//        server.setHandler(frontend);
+//        server.start();
+//        server.join();
+    }
 
-        FrontendImpl frontend = new FrontendImpl(messageSystem);
-        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
-        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
+    private static void hibernateTest() {
+        Configuration configuration = new Configuration();
 
-        (new Thread(frontend)).start();
-        (new Thread(accountService)).start();
-        (new Thread(gameMechanics)).start();
+        // Добавляем сохраняемый объект в конфиг
+        configuration.addAnnotatedClass(UserDataSet.class);
 
-        Server server = new Server(8080);
-        server.setHandler(frontend);
-        server.start();
-        server.join();
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/test_db");
+        configuration.setProperty("hibernate.connection.username", "test_user");
+        configuration.setProperty("hibernate.connection.password", "1234");
+        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+
+
+
+
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
+        StandardServiceRegistry serviceRegistry = builder.build();
+        SessionFactory sessionFactory = configuration.buildSessionFactory();
+
+
+        Session session = sessionFactory.openSession();
+
+        Transaction transaction = session.beginTransaction();
+        session.close();
+
+
+        UsersDAO dao = new UsersDAO(sessionFactory);
+//        UserDataSet userDataSet = new UserDataSet("Henry");
+//        dao.save(userDataSet);
+        // or:
+        UserDataSet userDataSet = dao.read(1);
+        int x = 1;
     }
 
     private static void jdbcTest() {
