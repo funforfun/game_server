@@ -29,13 +29,18 @@ public class UsersDAO {
 
     public UsersDataSet get(String name) throws SQLException {
 
-        return TExecutor.execQuery(connection, "SELECT * FROM users WHERE name=" + name, new TResultHandler<UsersDataSet>() {
 
+//        return new UsersDataSet(1, name);
+        return TExecutor.execQuery(connection, "SELECT * FROM users WHERE name='" + name + "'", new TResultHandler<UsersDataSet>() {
             public UsersDataSet handle(ResultSet result) throws SQLException {
+//                while (result.next()){
+//                    System.out.println("result.getLong(1): " + result.getLong(1));
+//                }
                 result.next();
-                return new UsersDataSet(result.getLong(1), result.getString(2));
+                System.out.println("result.getLong(1): " + result.getLong("id"));
+                System.out.println("result.getString(2): " + result.getString("name"));
+                return new UsersDataSet(result.getLong("id"), result.getString("name"));
             }
-
         });
     }
 }

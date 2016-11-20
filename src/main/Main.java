@@ -1,6 +1,11 @@
 package main;
 
+import accountService.DatabaseServiceImpl;
 import dbexecutor.TResultHandler;
+import frontend.FrontendImpl;
+import gameMechanics.GameMechanicsImpl;
+import messageSystem.MessageSystemImpl;
+import org.eclipse.jetty.server.Server;
 import resource.Resource;
 import resource.ResourceFactory;
 import resource.ResourcesMap;
@@ -14,25 +19,25 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        jdbcTest();
+//        jdbcTest();
         // timer + resources + vfs
 //        timerTest();
 
 
-//        MessageSystemImpl messageSystem = new MessageSystemImpl();
-//
-//        FrontendImpl frontend = new FrontendImpl(messageSystem);
-//        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
-//        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
-//
-//        (new Thread(frontend)).start();
-//        (new Thread(accountService)).start();
-//        (new Thread(gameMechanics)).start();
-//
-//        Server server = new Server(8080);
-//        server.setHandler(frontend);
-//        server.start();
-//        server.join();
+        MessageSystemImpl messageSystem = new MessageSystemImpl();
+
+        FrontendImpl frontend = new FrontendImpl(messageSystem);
+        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
+        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
+
+        (new Thread(frontend)).start();
+        (new Thread(accountService)).start();
+        (new Thread(gameMechanics)).start();
+
+        Server server = new Server(8080);
+        server.setHandler(frontend);
+        server.start();
+        server.join();
     }
 
     private static void jdbcTest() {
@@ -53,19 +58,20 @@ public class Main {
             Connection connection = DriverManager.getConnection(url.toString());
 
             // 1
-//            String[] strings = new String[20];
-//            strings[0] = "CREATE TABLE users (id bigint auto_increment, name varchar(256), primary key (id))";
-//            TExecutor.execUpdate(connection, strings);
+            String[] strings = new String[20];
+            strings[0] = "DROP TABLE users";
+            strings[1] = "CREATE TABLE users (id bigint auto_increment, name varchar(256), primary key (id))";
+            TExecutor.execUpdate(connection, strings);
 
             // 2
-//            Map<Integer, String> map = new HashMap<Integer, String>();
-//            map.put(1, "Vasya");
-//            map.put(2, "Petya");
-//            TExecutor.execUpdate(connection, map);
+            Map<Integer, String> map = new HashMap<Integer, String>();
+            map.put(1, "Vasya");
+            map.put(2, "Petya");
+            TExecutor.execUpdate(connection, map);
 
             // 3
 //            String query = "SELECT * FROM users";
-            String query = "SELECT name FROM users WHERE id=1";
+            String query = "SELECT name FROM users";
             String name = TExecutor.execQuery(connection, query, new TResultHandler<String>() {
                 public String handle(ResultSet result) throws SQLException {
                     result.next();
