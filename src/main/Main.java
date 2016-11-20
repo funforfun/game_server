@@ -59,25 +59,19 @@ public class Main {
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
 
-
-
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         StandardServiceRegistry serviceRegistry = builder.build();
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-
-
-        Session session = sessionFactory.openSession();
-
-        Transaction transaction = session.beginTransaction();
-        session.close();
+        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
 
         UsersDAO dao = new UsersDAO(sessionFactory);
 //        UserDataSet userDataSet = new UserDataSet("Henry");
 //        dao.save(userDataSet);
         // or:
-        UserDataSet userDataSet = dao.read(1);
+        UserDataSet userDataSet = dao.read(3);
+        String name = userDataSet.getName();
+
         int x = 1;
     }
 

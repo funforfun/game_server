@@ -23,6 +23,11 @@ public class UserDataSet {
         this.name = name;
     }
 
+    public UserDataSet(){
+        Integer test = 0;
+        ++test;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
