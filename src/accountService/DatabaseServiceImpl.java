@@ -85,15 +85,10 @@ public class DatabaseServiceImpl implements DatabaseService, Runnable {
     public long getUserId(String name) {
         ThreadSleepHelper.sleep(5000);
         long user_id = -1;
-        try {
-            UserDataSet userDataSet = usersDAO.get(name);
+        UserDataSet userDataSet = usersDAO.read(name);
+        if (userDataSet != null) {
             user_id = userDataSet.getId();
-        } catch (SQLException e) {
-//            e.printStackTrace();
-            System.out.println("Unknown player! " + name);
         }
-//        Integer user_id = fakeAccounter.get(name);
-//        return (user_id == -1) ? -1 : user_id;
         return user_id;
     }
 

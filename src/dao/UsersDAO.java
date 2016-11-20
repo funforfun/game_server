@@ -3,13 +3,18 @@ package dao;
 import dataSets.UserDataSet;
 import dbexecutor.TExecutor;
 import dbexecutor.TResultHandler;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.internal.SessionImpl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDAO {
     private Connection connection;
@@ -63,5 +68,14 @@ public class UsersDAO {
     public UserDataSet read(long id) {
         Session session = sessionFactory.openSession();
         return (UserDataSet) session.load(UserDataSet.class, id);
+    }
+
+    public UserDataSet read(String name) {
+        SessionImpl session = (SessionImpl) sessionFactory.openSession();
+        List userDataSets = session.createCriteria(UserDataSet.class)
+                .add(Restrictions.like("name", name))
+                .setMaxResults(1)
+                .list();
+        return (UserDataSet) userDataSets.get(0);
     }
 }

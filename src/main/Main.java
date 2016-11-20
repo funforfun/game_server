@@ -1,8 +1,13 @@
 package main;
 
+import accountService.DatabaseServiceImpl;
 import dao.UsersDAO;
 import dataSets.UserDataSet;
 import dbexecutor.TResultHandler;
+import frontend.FrontendImpl;
+import gameMechanics.GameMechanicsImpl;
+import messageSystem.MessageSystemImpl;
+import org.eclipse.jetty.server.Server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,26 +27,26 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        hibernateTest();
+//        hibernateTest();
 //        jdbcTest();
         // timer + resources + vfs
 //        timerTest();
 
 
-//        MessageSystemImpl messageSystem = new MessageSystemImpl();
-//
-//        FrontendImpl frontend = new FrontendImpl(messageSystem);
-//        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
-//        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
-//
-//        (new Thread(frontend)).start();
-//        (new Thread(accountService)).start();
-//        (new Thread(gameMechanics)).start();
-//
-//        Server server = new Server(8080);
-//        server.setHandler(frontend);
-//        server.start();
-//        server.join();
+        MessageSystemImpl messageSystem = new MessageSystemImpl();
+
+        FrontendImpl frontend = new FrontendImpl(messageSystem);
+        DatabaseServiceImpl accountService = new DatabaseServiceImpl(messageSystem);
+        GameMechanicsImpl gameMechanics = new GameMechanicsImpl(messageSystem);
+
+        (new Thread(frontend)).start();
+        (new Thread(accountService)).start();
+        (new Thread(gameMechanics)).start();
+
+        Server server = new Server(8080);
+        server.setHandler(frontend);
+        server.start();
+        server.join();
     }
 
     private static void hibernateTest() {
@@ -69,7 +74,7 @@ public class Main {
 //        UserDataSet userDataSet = new UserDataSet("Henry");
 //        dao.save(userDataSet);
         // or:
-        UserDataSet userDataSet = dao.read(3);
+        UserDataSet userDataSet = dao.read("Vasya");
         String name = userDataSet.getName();
 
         int x = 1;
