@@ -32,7 +32,6 @@ public class Main {
         // timer + resources + vfs
 //        timerTest();
 
-
         MessageSystemImpl messageSystem = new MessageSystemImpl();
 
         FrontendImpl frontend = new FrontendImpl(messageSystem);

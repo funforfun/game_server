@@ -1,5 +1,6 @@
 package base;
 
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Address {
